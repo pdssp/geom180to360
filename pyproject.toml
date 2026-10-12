@@ -6,7 +6,7 @@ authors = [{name="Jean-Christophe MALAPERT", email="jean-christophe.malapert@cne
 license = "Apache-2.0"
 packages = [{include = "geom180to360"}]
 homepage = "https://gitlab.cnes.fr/pdssp/common/geom180to360"
-version = "0.1.0"
+version = "1.0.0"
 requires-python = ">=3.12"
 dependencies = [
     "loguru==0.7.3",
