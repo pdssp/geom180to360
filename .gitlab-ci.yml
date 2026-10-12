@@ -48,9 +48,9 @@ stages:
   #- infra
   #- deploy
   #- acceptance
-  #- publish
-  # - infra-prod
-  # - production
+  - publish
+  #- infra-prod
+  #- production
 
 default:
   tags:
