@@ -1,0 +1,10 @@
+# Ignore everything
+*
+
+# Allow files and directories
+!/src/
+!/Makefile
+!/pyproject.toml
+!/README.md
+!/uv.lock
+
