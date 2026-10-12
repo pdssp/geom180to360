@@ -55,10 +55,10 @@ class UtilsMonitoring:  # noqa: R0205
         def decorator(func):
             @wraps(func)
             def wrapper(*args, **kwargs):
-                # Obtenir le logger avec le niveau configuré
+                # Get the logger with the configured level
                 log_level = level.upper()
 
-                # Logger les entrées si configuré
+                # Log inputs if configured
                 if input:
                     logger.log(
                         log_level,

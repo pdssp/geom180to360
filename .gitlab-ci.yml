@@ -1,16 +1,16 @@
 include:
-  - component: $CI_SERVER_FQDN/to-be-continuous/docker/gitlab-ci-docker@8.5.1
-    inputs:
-      build-tool: "buildah"
-      build-args: >
-        --build-arg BASE_IMAGE_REPO=${UL_ARTIFACTORY_HOST}/pdssp-docker
-        --build-arg PYTHON_VERSION=${PYTHON_VERSION}
-        --secret id=ca_cert,src=${CNES_CERTIFICATE}
-        --secret id=pip_index_url,src=PIP_INDEX_URL,type=env
-      prod-publish-strategy: auto
-      healthcheck-disabled: true
-      snapshot-image: ${UL_ARTIFACTORY_HOST}/pdssp-docker-dev-local/${CI_PROJECT_NAME}:${CI_COMMIT_REF_SLUG}
-      release-image: ${UL_ARTIFACTORY_HOST}/pdssp-docker-prod-local/${CI_PROJECT_NAME}:${CI_COMMIT_REF_NAME}
+  #- component: $CI_SERVER_FQDN/to-be-continuous/docker/gitlab-ci-docker@8.5.1
+  #  inputs:
+  #    build-tool: "buildah"
+  #    build-args: >
+  #      --build-arg BASE_IMAGE_REPO=${UL_ARTIFACTORY_HOST}/pdssp-docker
+  #      --build-arg PYTHON_VERSION=${PYTHON_VERSION}
+  #      --secret id=ca_cert,src=${CNES_CERTIFICATE}
+  #      --secret id=pip_index_url,src=PIP_INDEX_URL,type=env
+  #    prod-publish-strategy: auto
+  #    healthcheck-disabled: true
+  #    snapshot-image: ${UL_ARTIFACTORY_HOST}/pdssp-docker-dev-local/${CI_PROJECT_NAME}:${CI_COMMIT_REF_SLUG}
+  #    release-image: ${UL_ARTIFACTORY_HOST}/pdssp-docker-prod-local/${CI_PROJECT_NAME}:${CI_COMMIT_REF_NAME}
 
   - component: $CI_SERVER_FQDN/to-be-continuous/python/gitlab-ci-python@9.6.2
     inputs:
@@ -41,16 +41,16 @@ include:
 
 stages:
   - build
-  - test
-  - package-build
-  - package-test
+  - test 
+  #- package-build
+  #- package-test
   - sonarqube
-  - infra
-  - deploy
-  - acceptance
-  - publish
-  - infra-prod
-  - production
+  #- infra
+  #- deploy
+  #- acceptance
+  #- publish
+  # - infra-prod
+  # - production
 
 default:
   tags:
@@ -65,9 +65,9 @@ sonarqube:
   needs:
     - py-pytest
 
-docker-trivy:
-  variables:
-    TRIVY_DISABLE_VEX_NOTICE: "true"
+#docker-trivy:
+#  variables:
+#    TRIVY_DISABLE_VEX_NOTICE: "true"
 
 prepare_version:
   stage: test
@@ -81,36 +81,36 @@ prepare_version:
       dotenv: version.env
 
 # because we need git
-.python-base:
-  before_script:
-    - !reference [.python-scripts]
-    - install_ca_certs "${CUSTOM_CA_CERTS:-$DEFAULT_CA_CERTS}"
-    - configure_netrc
-    # Ignore cached files
-    - mkdir -p .cache && echo "*" >> .cache/.gitignore
-    - enforce_python_cmd
-    - cd ${PYTHON_PROJECT_DIR}
-    - guess_build_system
-    - |
-      if [[ "$PYTHON_BUILD_SYSTEM" =~ ^uv ]]; then
-        trap "cleanup_uv_cache" EXIT
-      fi
-    - maybe_install_packages git build-essential
+#.python-base:
+#  before_script:
+#    - !reference [.python-scripts]
+#    - install_ca_certs "${CUSTOM_CA_CERTS:-$DEFAULT_CA_CERTS}"
+#    - configure_netrc
+#    # Ignore cached files
+#    - mkdir -p .cache && echo "*" >> .cache/.gitignore
+#    - enforce_python_cmd
+#    - cd ${PYTHON_PROJECT_DIR}
+#    - guess_build_system
+#    - |
+#      if [[ "$PYTHON_BUILD_SYSTEM" =~ ^uv ]]; then
+#        trap "cleanup_uv_cache" EXIT
+#      fi
+#    - maybe_install_packages git build-essential
 
 # Job to build and publish documentation as GitLab Pages
-pages:
-  extends: .python-base
-  stage: publish
-  retry: 2
-  script:
-    - install_requirements
-    - apt-get update && apt-get install -y --no-install-recommends nodejs npm graphviz
-    - npm config set cafile "${CNES_CERTIFICATE}"
-    - make doc
-    - mv site public
-  rules:
-    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
-  artifacts:
-    paths:
-      - public
+#pages:
+#  extends: .python-base
+#  stage: publish
+#  retry: 2
+#  script:
+#    - install_requirements
+#    - apt-get update && apt-get install -y --no-install-recommends nodejs npm graphviz
+#    - npm config set cafile "${CNES_CERTIFICATE}"
+#    - make doc
+#    - mv site public
+#  rules:
+#    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+#  artifacts:
+#    paths:
+#      - public
     

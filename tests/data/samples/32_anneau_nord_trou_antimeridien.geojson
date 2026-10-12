@@ -1,0 +1,55 @@
+{
+  "type": "Feature",
+  "properties": {
+    "description": "Anneau autour du pôle Nord avec un trou qui traverse ±180°"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          0,
+          80
+        ],
+        [
+          90,
+          80
+        ],
+        [
+          180,
+          80
+        ],
+        [
+          -90,
+          80
+        ],
+        [
+          0,
+          80
+        ]
+      ],
+      [
+        [
+          170,
+          82
+        ],
+        [
+          -170,
+          82
+        ],
+        [
+          -170,
+          85
+        ],
+        [
+          170,
+          85
+        ],
+        [
+          170,
+          82
+        ]
+      ]
+    ]
+  }
+}
