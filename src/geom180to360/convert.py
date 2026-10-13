@@ -29,7 +29,7 @@ from shapely import wkt as shapely_wkt
 from shapely.geometry import GeometryCollection, MultiPoint, Point, box
 from shapely.geometry.base import BaseGeometry
 
-from .geometry_utils import EPS, assemble, keep_dimension, translate
+from .geometry_utils import EPS, assemble, get_dimension, translate
 from .polar import resolve_polar_rings
 
 __all__ = ["convert_geometry", "convert_wkt", "shift_longitudes"]
@@ -106,7 +106,7 @@ def convert_geometry(geom: BaseGeometry, split: bool = True) -> BaseGeometry:
     west = translate(geom.intersection(west_box), 360.0)
     east = geom.intersection(east_box)
 
-    parts = keep_dimension(west, dim) + keep_dimension(east, dim)
+    parts = get_dimension(west, dim) + get_dimension(east, dim)
     # normalize(): deterministic output (canonical vertex order).
     return assemble(parts, dim, multi).normalize()
 

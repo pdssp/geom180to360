@@ -22,14 +22,14 @@ def translate(geom: BaseGeometry, dx: float) -> BaseGeometry:
     return shapely.transform(geom, _transform, include_z=geom.has_z)
 
 
-def keep_dimension(geom: BaseGeometry, dim: int) -> list[BaseGeometry]:
+def get_dimension(geom: BaseGeometry, dim: int) -> list[BaseGeometry]:
     """Extract simple components of dimension ``dim`` from a geometry."""
     if geom.is_empty:
         return []
     if hasattr(geom, "geoms"):
         parts: list[BaseGeometry] = []
         for g in geom.geoms:
-            parts.extend(keep_dimension(g, dim))
+            parts.extend(get_dimension(g, dim))
         return parts
     return [geom] if shapely.get_dimensions(geom) == dim else []
 
@@ -47,7 +47,7 @@ def assemble(parts: list[BaseGeometry], dim: int, multi: bool) -> BaseGeometry:
     """Reconstruct a homogeneous geometry from simple components."""
     if dim == 2:
         merged = drop_collinear(unary_union(parts)) if parts else Polygon()
-        polys = keep_dimension(merged, 2)
+        polys = get_dimension(merged, 2)
         if len(polys) == 1 and not multi:
             return polys[0]
         return MultiPolygon(polys)
@@ -55,7 +55,7 @@ def assemble(parts: list[BaseGeometry], dim: int, multi: bool) -> BaseGeometry:
         merged = (
             drop_collinear(linemerge(unary_union(parts))) if parts else LineString()
         )
-        lines = keep_dimension(merged, 1)
+        lines = get_dimension(merged, 1)
         if len(lines) == 1 and not multi:
             return lines[0]
         return MultiLineString(lines)

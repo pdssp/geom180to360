@@ -15,7 +15,7 @@ from shapely.geometry import GeometryCollection, LinearRing, Polygon, box
 from shapely.geometry.base import BaseGeometry
 from shapely.ops import unary_union
 
-from .geometry_utils import EPS, assemble, keep_dimension, translate
+from .geometry_utils import EPS, assemble, get_dimension, translate
 
 __all__ = ["resolve_polar_rings"]
 
@@ -68,7 +68,7 @@ def _encircled_pole(ring: LinearRing) -> float | None:
 def _fold_180(geom: BaseGeometry) -> BaseGeometry:
     """Fold back into [-180, 180] a geometry whose longitudes exceed it."""
     pieces = [translate(geom, 360.0 * k).intersection(_WORLD_180) for k in range(-2, 3)]
-    return unary_union([p for piece in pieces for p in keep_dimension(piece, 2)])
+    return unary_union([p for piece in pieces for p in get_dimension(piece, 2)])
 
 
 def _polar_cap(poly: Polygon, pole: float) -> BaseGeometry:
@@ -110,5 +110,5 @@ def resolve_polar_rings(geom: BaseGeometry) -> BaseGeometry:
         p if pole is None else _polar_cap(p, pole)
         for p, pole in zip(polys, poles, strict=True)
     ]
-    merged = [q for part in parts for q in keep_dimension(part, 2)]
+    merged = [q for part in parts for q in get_dimension(part, 2)]
     return assemble(merged, 2, geom.geom_type == "MultiPolygon")

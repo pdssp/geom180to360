@@ -279,7 +279,7 @@ The `geometry_utils` module provides low-level geometric operations:
 | Function | Role |
 |---|---|
 | `translate(geom, dx)` | Shift all longitudes by `dx` degrees |
-| `keep_dimension(geom, dim)` | Extract simple components of dimension `dim` |
+| `get_dimension(geom, dim)` | Extract simple components of dimension `dim` |
 | `drop_collinear(geom)` | Remove collinear vertices left by cuts |
 | `assemble(parts, dim, multi)` | Reconstruct a homogeneous geometry from simple components |
 

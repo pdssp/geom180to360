@@ -10,7 +10,7 @@ import numpy as np
 import shapely
 from shapely.geometry.base import BaseGeometry
 
-from .geometry_utils import keep_dimension
+from .geometry_utils import get_dimension
 from .convert import convert_geometry
 from .polar import resolve_polar_rings
 
@@ -82,7 +82,7 @@ def _fill_pieces(geom: BaseGeometry):
     Each piece is small: the 3D polygon connecting its vertices stays
     attached to the sphere (a large flat face would pass through it).
     """
-    polys = keep_dimension(geom, 2)
+    polys = get_dimension(geom, 2)
     if not polys:
         return []
     minx, miny, maxx, maxy = geom.bounds
@@ -93,10 +93,10 @@ def _fill_pieces(geom: BaseGeometry):
     pieces = []
     for poly in polys:
         for piece in shapely.intersection(poly, cells):
-            for p in keep_dimension(piece, 2):
+            for p in get_dimension(piece, 2):
                 if p.interiors:  # hole smaller than a grid cell
                     pieces.extend(
-                        keep_dimension(shapely.constrained_delaunay_triangles(p), 2)
+                        get_dimension(shapely.constrained_delaunay_triangles(p), 2)
                     )
                 else:
                     pieces.append(p)
@@ -269,9 +269,9 @@ def _draw_sphere(
 
     # Contours et lignes.
     rings = []
-    for poly in keep_dimension(geom, 2):
+    for poly in get_dimension(geom, 2):
         rings.extend([poly.exterior, *poly.interiors])
-    rings.extend(keep_dimension(geom, 1))
+    rings.extend(get_dimension(geom, 1))
     for ring in rings:
         c = _densify(ring.coords)
         ax.plot(
@@ -281,7 +281,7 @@ def _draw_sphere(
         )
 
     # Points.
-    pts = [g for g in keep_dimension(geom, 0)]
+    pts = [g for g in get_dimension(geom, 0)]
     if pts:
         c = np.array([(p.x, p.y) for p in pts])
         px, py, pz = _hide_back(*_lonlat_to_xyz(c[:, 0], c[:, 1], 1.006), v)
