@@ -6,7 +6,7 @@ authors = [{name="Jean-Christophe MALAPERT", email="jean-christophe.malapert@cne
 license = "Apache-2.0"
 packages = [{include = "geom180to360"}]
 homepage = "https://gitlab.cnes.fr/pdssp/common/geom180to360"
-version = "1.0.0"
+version = "1.0.1"
 # Python 3.15 triggers a source build of brotli (via matplotlib/fonttools) which fails as on CI as gcc is not available
 requires-python = ">=3.12,<3.15"
 dependencies = [
