@@ -15,7 +15,7 @@ from shapely.geometry import GeometryCollection, LinearRing, Polygon, box
 from shapely.geometry.base import BaseGeometry
 from shapely.ops import unary_union
 
-from ._geometry import EPS, assemble, keep_dimension, translate
+from .geometry_utils import EPS, assemble, keep_dimension, translate
 
 __all__ = ["resolve_polar_rings"]
 

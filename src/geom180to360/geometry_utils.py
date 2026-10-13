@@ -1,4 +1,4 @@
-"""Internal geometric tools shared by package modules."""
+"""Geometric utils."""
 
 from __future__ import annotations
 

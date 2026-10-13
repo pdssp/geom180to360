@@ -29,7 +29,7 @@ from shapely import wkt as shapely_wkt
 from shapely.geometry import GeometryCollection, MultiPoint, Point, box
 from shapely.geometry.base import BaseGeometry
 
-from ._geometry import EPS, assemble, keep_dimension, translate
+from .geometry_utils import EPS, assemble, keep_dimension, translate
 from .polar import resolve_polar_rings
 
 __all__ = ["convert_geometry", "convert_wkt", "shift_longitudes"]

@@ -28,5 +28,5 @@ __all__ = [
     "plot_conversion",
     "plot_sphere",
     "resolve_polar_rings",
-    "shift_longitudes",
+    "shift_longitudes"
 ]

@@ -270,6 +270,22 @@ plot_sphere(geom)  # une seule sphère
 | `plot_sphere(geom, …)` | Draw a geometry on a 3D sphere |
 | `plot_conversion(src, dst=None, output=None, view=None, split=True)` | Input/output figure |
 
+You can also use the module `geometry_utils` 
+
+#### Utility functions
+
+The `geometry_utils` module provides low-level geometric operations:
+
+| Function | Role |
+|---|---|
+| `translate(geom, dx)` | Shift all longitudes by `dx` degrees |
+| `keep_dimension(geom, dim)` | Extract simple components of dimension `dim` |
+| `drop_collinear(geom)` | Remove collinear vertices left by cuts |
+| `assemble(parts, dim, multi)` | Reconstruct a homogeneous geometry from simple components |
+
+**Constants:**
+- `EPS` — Tolerance for coordinate comparisons in degrees (default: 1e-12)
+
 ### Errors
 
 A longitude outside [-180, 180] in input causes an error. On the command line,

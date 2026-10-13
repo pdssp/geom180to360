@@ -10,7 +10,7 @@ import numpy as np
 import shapely
 from shapely.geometry.base import BaseGeometry
 
-from ._geometry import keep_dimension
+from .geometry_utils import keep_dimension
 from .convert import convert_geometry
 from .polar import resolve_polar_rings
 
